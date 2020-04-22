@@ -1,8 +1,15 @@
 {
-	"name": "@elijahjcobb/***",
-	"version": "0.1.0",
-	"description": "",
-	"keywords": [],
+	"name": "@element-ts/oxygen",
+	"version": "1.0.0",
+	"description": "A recursive run-time type checking package that is simple to use yet provides all the functionality you will ever need. Written by and for Typescript.",
+	"keywords": [
+		"type",
+		"check",
+		"checker",
+		"typescript",
+		"runtime",
+		"recursive"
+	],
 	"main": "js/index",
 	"types": "dts/index",
 	"files": [
@@ -19,7 +26,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/elijahjcobb/***.git"
+		"url": "git+https://github.com/element-ts/oxygen.git"
 	},
 	"publishConfig": {
 		"access": "public"
@@ -27,9 +34,9 @@
 	"author": "Elijah Cobb <elijah@elijahcobb.com> (https://elijahcobb.com/)",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/elijahjcobb/***/issues"
+		"url": "https://github.com/element-ts/oxygen/issues"
 	},
-	"homepage": "https://github.com/elijahjcobb/***#readme",
+	"homepage": "https://github.com/element-ts/oxygen#readme",
 	"dependencies": {},
 	"devDependencies": {
 		"@types/node": "latest",
