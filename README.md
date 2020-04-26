@@ -102,12 +102,27 @@ OObjectType.follow({
 }); // false
 ```
 
+### `OReget`
+The ability to handle regex checking in the oxygen type checking system. You can write your own regex with `.custom()`
+or use one of the predefined regex expressions.
+```typescript
+import {ORegex} from "@element-ts/oxygen";
+
+ORegex.phone().conforms("+1 (123) 456-7890"); // true
+ORegex.phone().conforms("qwqwd 1234"); // false
+ORegex.email().conforms("john@gmail.com"); // true
+ORegex.domain().conforms("google.com"); // true
+ORegex.url().conforms("https://google.com"); // true
+ORegex.custom(/#?([\da-fA-F]{2})([\da-fA-F]{2})([\da-fA-F]{2})/g).conforms("#FAFAFA"); // true
+```
+
 ### `OAny`
 This type is an extra type that literally always returns true. This can be used for example with `OOptional` to require
 that a value is defined and it does not matter the type of the variable.
 ```typescript
 import {OAny} from "@element-ts/oxygen";
-OAny.any();
+OAny.any().conforms(1); // true
+OAny.any().conforms(undefined); // true
 ```
 
 ## Recursive

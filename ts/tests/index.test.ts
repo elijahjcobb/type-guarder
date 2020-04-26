@@ -1,4 +1,5 @@
-import {OArrayType, OObjectType, OObjectTypeDefinition, OStandardType, OType} from "../index";
+import {OAny, OArrayType, OObjectType, OObjectTypeDefinition, OOptional, OStandardType, OType} from "../index";
+import {ORegex} from "../ORegex";
 
 describe("OStandardType", (): void => {
 
@@ -188,5 +189,85 @@ describe("OObjectType", (): void => {
 		});
 		i++;
 	}
+
+});
+
+describe("OAny", (): void => {
+
+	test("Boolean", (): void => expect(OAny.any().conforms(true)).toBeTruthy());
+	test("String", (): void => expect(OAny.any().conforms("Hello, world!")).toBeTruthy());
+	test("Number", (): void => expect(OAny.any().conforms(42)).toBeTruthy());
+	test("Array", (): void => expect(OAny.any().conforms([])).toBeTruthy());
+	test("Object", (): void => expect(OAny.any().conforms({})).toBeTruthy());
+	test("Undefined", (): void => expect(OAny.any().conforms(undefined)).toBeTruthy());
+
+});
+
+describe("OOptional", (): void => {
+
+	test("t1", (): void => expect(OOptional.maybe(OAny.any()).conforms(undefined)).toBeTruthy());
+	test("t2", (): void => expect(OOptional.maybe(OAny.any()).conforms(32)).toBeTruthy());
+	test("t3", (): void => expect(OOptional.maybe(OStandardType.string).conforms(undefined)).toBeTruthy());
+	test("t4", (): void => expect(OOptional.maybe(OStandardType.string).conforms("Hello, world!")).toBeTruthy());
+	test("t5", (): void => expect(OOptional.maybe(OStandardType.string).conforms(42)).toBeFalsy());
+
+});
+
+describe("ORegex", (): void => {
+
+	describe("Email", (): void => {
+
+		test("t1", (): void => expect(ORegex.email().conforms("john@gmail.com")).toBeTruthy());
+		test("t2", (): void => expect(ORegex.email().conforms("")).toBeFalsy());
+		test("t3", (): void => expect(ORegex.email().conforms("@gmail.com")).toBeFalsy());
+		test("t4", (): void => expect(ORegex.email().conforms("@gmail")).toBeFalsy());
+		test("t5", (): void => expect(ORegex.email().conforms("john@")).toBeFalsy());
+		test("t6", (): void => expect(ORegex.email().conforms("john@.com")).toBeFalsy());
+		test("t7", (): void => expect(ORegex.email().conforms("@gmail.com")).toBeFalsy());
+		test("t8", (): void => expect(ORegex.email().conforms("john@.com")).toBeFalsy());
+		test("t9", (): void => expect(ORegex.email().conforms("@.com")).toBeFalsy());
+
+	});
+
+	describe("Domain", (): void => {
+
+		test("t1", (): void => expect(ORegex.domain().conforms("gmail.com")).toBeTruthy());
+		test("t2", (): void => expect(ORegex.domain().conforms("a.b.c.com")).toBeTruthy());
+		test("t3", (): void => expect(ORegex.domain().conforms("mail.google.com")).toBeTruthy());
+		test("t4", (): void => expect(ORegex.domain().conforms(".com")).toBeFalsy());
+		test("t5", (): void => expect(ORegex.domain().conforms("google")).toBeFalsy());
+		test("t6", (): void => expect(ORegex.domain().conforms("google.")).toBeFalsy());
+
+	});
+
+	describe("URL", (): void => {
+
+		test("t1", (): void => expect(ORegex.url().conforms("http://gmail.com")).toBeTruthy());
+		test("t2", (): void => expect(ORegex.url().conforms("https://gmail.com")).toBeTruthy());
+		test("t3", (): void => expect(ORegex.url().conforms("http://gmail.com/hi")).toBeTruthy());
+		test("t4", (): void => expect(ORegex.url().conforms("gmail.com")).toBeTruthy());
+		test("t5", (): void => expect(ORegex.url().conforms("a.b.c.com")).toBeTruthy());
+		test("t6", (): void => expect(ORegex.url().conforms("mail.google.com")).toBeTruthy());
+		test("t7", (): void => expect(ORegex.url().conforms(".com")).toBeFalsy());
+		test("t8", (): void => expect(ORegex.url().conforms("google")).toBeFalsy());
+		test("t9", (): void => expect(ORegex.url().conforms("google.")).toBeFalsy());
+
+	});
+
+	describe("Phone", (): void => {
+
+		test("t1", (): void => expect(ORegex.phone().conforms("+1 (123) 456 - 7890")).toBeTruthy());
+		test("t2", (): void => expect(ORegex.phone().conforms("+1 (123) 456 -7890")).toBeTruthy());
+		test("t3", (): void => expect(ORegex.phone().conforms("+1 (123) 456- 7890")).toBeTruthy());
+		test("t4", (): void => expect(ORegex.phone().conforms("+1 (123) 456-7890")).toBeTruthy());
+		test("t5", (): void => expect(ORegex.phone().conforms("+1 (123)456-7890")).toBeTruthy());
+		test("t6", (): void => expect(ORegex.phone().conforms("+11234567890")).toBeTruthy());
+		test("t7", (): void => expect(ORegex.phone().conforms("+1 123 456 - 7890")).toBeTruthy());
+		test("t8", (): void => expect(ORegex.phone().conforms("2112")).toBeFalsy());
+		test("t9", (): void => expect(ORegex.phone().conforms("123467890a")).toBeFalsy());
+		test("t0", (): void => expect(ORegex.phone().conforms("+a1")).toBeFalsy());
+		test("t10", (): void => expect(ORegex.phone().conforms("1a1")).toBeFalsy());
+
+	});
 
 });
