@@ -102,6 +102,14 @@ OObjectType.follow({
 }); // false
 ```
 
+### `OAny`
+This type is an extra type that literally always returns true. This can be used for example with `OOptional` to require
+that a value is defined and it does not matter the type of the variable.
+```typescript
+import {OAny} from "@element-ts/oxygen";
+OAny.any();
+```
+
 ## Recursive
 Keep in mind, every type checker's type input is of `OType` and every type checker is an `OType`. So you can super
 easily build recursive structures and Oxygen will type check all of it!

@@ -12,3 +12,4 @@ export * from "./OEnum";
 export * from "./OUnion";
 export * from "./OOptional";
 export * from "./OType";
+export * from "./OAny";

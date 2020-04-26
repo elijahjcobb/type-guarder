@@ -24,6 +24,6 @@ export class OEnum extends OType {
 
 	}
 
-	public static any(...values: any[]): OEnum { return new OEnum(values); }
+	public static any(...values: any[]): OType { return new OEnum(values); }
 
 }
