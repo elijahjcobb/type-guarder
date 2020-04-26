@@ -1,6 +1,6 @@
 {
   "name": "@element-ts/oxygen",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A recursive run-time type checking package that is simple to use yet provides all the functionality you will ever need. Written by and for Typescript.",
   "keywords": [
     "type",

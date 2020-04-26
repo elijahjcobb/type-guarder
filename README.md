@@ -102,7 +102,7 @@ OObjectType.follow({
 }); // false
 ```
 
-### `OReget`
+### `ORegex`
 The ability to handle regex checking in the oxygen type checking system. You can write your own regex with `.custom()`
 or use one of the predefined regex expressions.
 ```typescript
@@ -134,11 +134,13 @@ import {
     OEnum,
     OObjectType,
     OOptional,
-    OStandardType
+    OStandardType,
+    ORegex
 } from "@element-ts/oxygen";
 
 OObjectType.follow({
 	name: OStandardType.string,
+    email: ORegex.email(),
 	age: OStandardType.number,
 	favoriteNumbers: OArrayType.any(OStandardType.number),
 	address: OObjectType.follow({
