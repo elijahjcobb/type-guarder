@@ -13,3 +13,4 @@ export * from "./OUnion";
 export * from "./OOptional";
 export * from "./OType";
 export * from "./OAny";
+export * from "./ORegex";
