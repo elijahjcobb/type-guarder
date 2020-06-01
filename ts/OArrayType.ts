@@ -7,11 +7,11 @@
 
 import {OType} from "./OType";
 
-export class OArrayType extends OType {
+export class OArrayType<T> extends OType<T> {
 
-	private readonly types: OType[];
+	private readonly types: OType<T>[];
 
-	private constructor(types: OType[]) {
+	private constructor(types: OType<T>[]) {
 		super();
 		this.types = types;
 	}
@@ -43,6 +43,6 @@ export class OArrayType extends OType {
 		return true;
 	}
 
-	public static any<T>(...types: OType[]): OType { return new OArrayType(types); }
+	public static any<T>(...types: OType<T>[]): OType<T> { return new OArrayType(types); }
 
 }

@@ -7,15 +7,15 @@
 
 import {OType} from "./OType";
 
-export interface OObjectTypeDefinition {
-	[key: string]: OType;
-}
+export type OObjectTypeDefinition<T> = {
+	[K in keyof T]: OType<any>;
+};
 
-export class OObjectType extends OType {
+export class OObjectType<T extends {[K in keyof T]: V extends OType<infer V> ? V : never}, V> extends OType<T> {
 
-	private readonly type: OObjectTypeDefinition;
+	private readonly type: OObjectTypeDefinition<T>;
 
-	private constructor(types: OObjectTypeDefinition) {
+	private constructor(types: OObjectTypeDefinition<T>) {
 		super();
 		this.type = types;
 	}
@@ -26,10 +26,10 @@ export class OObjectType extends OType {
 
 		let countedKeys: number = Object.keys(this.type).length;
 
-		for (const k of Object.keys(this.type)) {
+		for (const k in this.type) {
 
 			const v: any = value[k];
-			const expectedValue: OType | undefined = this.type[k];
+			const expectedValue: OType<T> | undefined = this.type[k];
 			if (expectedValue === undefined) continue;
 			const conformity: boolean = expectedValue.conforms(v);
 			if (!conformity) return false;
@@ -41,6 +41,6 @@ export class OObjectType extends OType {
 
 	}
 
-	public static follow(type: OObjectTypeDefinition): OType { return new OObjectType(type); }
+	public static follow<T>(type: OObjectTypeDefinition<T>): OType<T> { return new OObjectType(type); }
 
 }

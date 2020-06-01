@@ -13,7 +13,7 @@ describe("OStandardType", (): void => {
 		[]
 	];
 
-	function createTests(truthyValue: any, type: OType): void {
+	function createTests<T>(truthyValue: any, type: OType<T>): void {
 		for (const value of values) {
 			const conforms: boolean = type.conforms(value);
 			test(typeof value, (): void => expect(conforms).toEqual(value === truthyValue));
@@ -31,7 +31,7 @@ describe("OStandardType", (): void => {
 describe("OArrayType", (): void => {
 
 
-	const values: Map<any, OType> = new Map();
+	const values: Map<any, OType<any>> = new Map();
 
 	values.set("", OStandardType.string);
 	values.set(42, OStandardType.number);
@@ -83,7 +83,7 @@ describe("OArrayType", (): void => {
 
 describe("OObjectType", (): void => {
 
-	const tests: {expect: OObjectTypeDefinition, value: any, truthy: boolean}[] = [
+	const tests: {expect: OObjectTypeDefinition<any>, value: any, truthy: boolean}[] = [
 		{
 			expect: {
 

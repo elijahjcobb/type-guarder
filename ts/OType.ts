@@ -5,13 +5,13 @@
  * github.com/elijahjcobb
  */
 
-export abstract class OType {
+export abstract class OType<T> {
 
 	protected constructor() {}
 
 	public abstract conforms(value: any): boolean;
 
-	public verify<T>(value: any): T | undefined {
+	public verify(value: any): T | undefined {
 
 		if (!this.conforms(value)) return undefined;
 		return value as unknown as T;

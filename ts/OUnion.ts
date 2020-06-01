@@ -7,11 +7,11 @@
 
 import {OType} from "./OType";
 
-export class OUnion extends OType {
+export class OUnion<T> extends OType<T> {
 
-	private readonly types: OType[];
+	private readonly types: OType<T>[];
 
-	private constructor(types: OType[]) {
+	private constructor(types: OType<T>[]) {
 		super();
 		this.types = types;
 	}
@@ -29,6 +29,6 @@ export class OUnion extends OType {
 
 	}
 
-	public static any(...types: OType[]): OType { return new OUnion(types); }
+	public static any<T>(...types: OType<T>[]): OType<T> { return new OUnion(types); }
 
 }

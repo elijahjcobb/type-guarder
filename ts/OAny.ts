@@ -7,7 +7,7 @@
 
 import {OType} from "./OType";
 
-export class OAny extends OType {
+export class OAny extends OType<any> {
 
 
 	private constructor() {
@@ -22,6 +22,6 @@ export class OAny extends OType {
 
 	}
 
-	public static any(): OType { return new OAny(); }
+	public static any(): OType<any> { return new OAny(); }
 
 }

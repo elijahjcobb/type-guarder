@@ -7,11 +7,11 @@
 
 import {OType} from "./OType";
 
-export class OOptional extends OType {
+export class OOptional<T> extends OType<T | undefined> {
 
-	private readonly type: OType;
+	private readonly type: OType<T>;
 
-	private constructor(type: OType) {
+	private constructor(type: OType<T>) {
 		super();
 		this.type = type;
 	}
@@ -23,6 +23,6 @@ export class OOptional extends OType {
 
 	}
 
-	public static maybe(type: OType): OType { return new OOptional(type); }
+	public static maybe<T>(type: OType<T>): OType<T | undefined> { return new OOptional(type); }
 
 }

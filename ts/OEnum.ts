@@ -7,11 +7,11 @@
 
 import {OType} from "./OType";
 
-export class OEnum extends OType {
+export class OEnum<T> extends OType<T> {
 
-	private values: any[];
+	private values: T[];
 
-	private constructor(values: any[]) {
+	private constructor(values: T[]) {
 
 		super();
 		this.values = values;
@@ -24,6 +24,6 @@ export class OEnum extends OType {
 
 	}
 
-	public static any(...values: any[]): OType { return new OEnum(values); }
+	public static any<T>(...values: T[]): OType<T> { return new OEnum(values); }
 
 }
