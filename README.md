@@ -9,9 +9,11 @@ Oxygen is a recursive run-time type checking package that is simple to use yet p
 ever need. Written by and for Typescript.
 
 There are 6 different type checkers built into Oxygen. Below I will explain all of them. Every type extends `OType`.
-This provides you with `conforms:(value: void) => boolean` which tells you if a value follows the type. Also, a helpful
-method is provided: `verify<T>(value: any): T | undefined` which internally calls `conforms()` and returns `undefined`
-if it does not conform, or returns `T` if it conforms.
+This provides you with a few functions below as shown below. Everything is not only type-checking during runtime, but
+it is also ALL generic. Most times you won't even realize the type system working underneath. For example, if you are
+checking a `OStandartType.string` and you call `.verify()` you will get back `string | undefined`. The type system is
+smart enough for all types to know what you are really meaning in your type definitions because it just infers the raw
+base type.
 
 ## Functions
 #### `.conforms(value: any): boolean`
@@ -34,6 +36,8 @@ The standard type object contains types like: string, number, boolean, void, und
 import {OStandardType} from "@element-ts/oxygen";
 
 OStandardType.number.conforms(42); // true
+OStandardType.number.verify("Hello,  world!"); // number | undefined
+OStandardType.number.verify({a: 1, b: 2}); // number (may throw error)
 OStandardType.number.conforms("Hello, world!"); // false
 OStandardType.string.conforms("Hello, world!"); // true
 OStandardType.boolean.conforms(42); // false
