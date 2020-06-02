@@ -13,6 +13,18 @@ This provides you with `conforms:(value: void) => boolean` which tells you if a 
 method is provided: `verify<T>(value: any): T | undefined` which internally calls `conforms()` and returns `undefined`
 if it does not conform, or returns `T` if it conforms.
 
+## Functions
+#### `.conforms(value: any): boolean`
+This will check if the value passed in conforms to the `OType` it returns a boolean for whether or not the value conforms.
+
+#### `.verify(value: any): T | undefined`
+This function will check if the value conforms and if it does, it will return the value with the correct types in the
+type system by parsing out the raw type from the `OType` provided.
+
+#### `.force(value: any): T`
+This function is almost identical to `verify(...)` however it will returns `T` instead of `T | undefined` if the value
+does not conform, an error will be thrown.
+
 ## Types
 
 ### `OStandardType`

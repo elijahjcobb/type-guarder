@@ -8,10 +8,12 @@
 import {OType} from "./OType";
 
 export type OObjectTypeDefinition<T> = {
-	[K in keyof T]: OType<any>;
+	[K in keyof T]: T[K] extends OType<any> ? T[K] : never
 };
 
-export class OObjectType<T extends {[K in keyof T]: V extends OType<infer V> ? V : never}, V> extends OType<T> {
+export class OObjectType<T extends OObjectTypeDefinition<T>> extends OType<{
+	[K in keyof T]: T[K] extends OType<infer V> ? V : never;
+}> {
 
 	private readonly type: OObjectTypeDefinition<T>;
 
@@ -41,6 +43,8 @@ export class OObjectType<T extends {[K in keyof T]: V extends OType<infer V> ? V
 
 	}
 
-	public static follow<T>(type: OObjectTypeDefinition<T>): OType<T> { return new OObjectType(type); }
+	public static follow<T extends OObjectTypeDefinition<T>>(type: OObjectTypeDefinition<T>): OType<{
+		[K in keyof T]: T[K] extends OType<infer V> ? V : never;
+	}> { return new OObjectType(type); }
 
 }

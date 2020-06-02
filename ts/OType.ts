@@ -18,4 +18,11 @@ export abstract class OType<T> {
 
 	}
 
+	public force(value: any): T {
+
+		if (!this.conforms(value)) throw new Error("Oxygen found a type that does not conform.");
+		return value as unknown as T;
+
+	}
+
 }
