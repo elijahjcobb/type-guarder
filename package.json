@@ -1,6 +1,6 @@
 {
   "name": "@element-ts/oxygen",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A recursive run-time type checking package that is simple to use yet provides all the functionality you will ever need. Written by and for Typescript.",
   "keywords": [
     "type",
@@ -37,12 +37,11 @@
     "url": "https://github.com/element-ts/oxygen/issues"
   },
   "homepage": "https://github.com/element-ts/oxygen#readme",
-  "dependencies": {},
   "devDependencies": {
+    "@types/jest": "latest",
     "@types/node": "latest",
-    "typescript": "latest",
-    "tslint": "latest",
     "jest": "latest",
-    "@types/jest": "latest"
+    "tslint": "latest",
+    "typescript": "latest"
   }
 }

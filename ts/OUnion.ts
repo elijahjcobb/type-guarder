@@ -9,9 +9,9 @@ import {OType} from "./OType";
 
 export class OUnion<T> extends OType<T> {
 
-	private readonly types: OType<T>[];
+	protected readonly types: OType<T>[];
 
-	private constructor(types: OType<T>[]) {
+	protected constructor(types: OType<T>[]) {
 		super();
 		this.types = types;
 	}

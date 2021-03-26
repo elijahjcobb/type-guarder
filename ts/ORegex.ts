@@ -10,9 +10,9 @@ import {OStandardType} from "./OStandardType";
 
 export class ORegex extends OType<string> {
 
-	private expression: RegExp;
+	protected expression: RegExp;
 
-	private constructor(expression: RegExp) {
+	protected constructor(expression: RegExp) {
 
 		super();
 

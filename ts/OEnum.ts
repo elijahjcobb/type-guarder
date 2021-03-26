@@ -9,9 +9,9 @@ import {OType} from "./OType";
 
 export class OEnum<T> extends OType<T> {
 
-	private values: T[];
+	protected values: T[];
 
-	private constructor(values: T[]) {
+	protected constructor(values: T[]) {
 
 		super();
 		this.values = values;

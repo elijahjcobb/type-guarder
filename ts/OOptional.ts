@@ -9,9 +9,9 @@ import {OType} from "./OType";
 
 export class OOptional<T> extends OType<T | undefined> {
 
-	private readonly type: OType<T>;
+	protected readonly type: OType<T>;
 
-	private constructor(type: OType<T>) {
+	protected constructor(type: OType<T>) {
 		super();
 		this.type = type;
 	}

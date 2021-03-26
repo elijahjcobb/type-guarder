@@ -10,7 +10,7 @@ import {OType} from "./OType";
 export class OAny extends OType<any> {
 
 
-	private constructor() {
+	protected constructor() {
 
 		super();
 

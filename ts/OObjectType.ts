@@ -15,9 +15,9 @@ export class OObjectType<T extends OObjectTypeDefinition<T>> extends OType<{
 	[K in keyof T]: T[K] extends OType<infer V> ? V : never;
 }> {
 
-	private readonly type: OObjectTypeDefinition<T>;
+	protected readonly type: OObjectTypeDefinition<T>;
 
-	private constructor(types: OObjectTypeDefinition<T>) {
+	protected constructor(types: OObjectTypeDefinition<T>) {
 		super();
 		this.type = types;
 	}

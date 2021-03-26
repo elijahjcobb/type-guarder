@@ -9,7 +9,7 @@ import {OType} from "./OType";
 
 export class OStandardType<T> extends OType<T> {
 
-	private readonly type: "string" | "number" | "boolean" | "null" | "void" | "undefined";
+	protected readonly type: "string" | "number" | "boolean" | "null" | "void" | "undefined";
 
 	public static readonly string: OStandardType<string> = new OStandardType("string");
 	public static readonly number: OStandardType<number> = new OStandardType("number");
@@ -18,7 +18,7 @@ export class OStandardType<T> extends OType<T> {
 	public static readonly null: OStandardType<null> = new OStandardType("null");
 	public static readonly undefined: OStandardType<undefined> = new OStandardType("undefined");
 
-	private constructor(type: "string" | "number" | "boolean" | "null" | "void" | "undefined") {
+	protected constructor(type: "string" | "number" | "boolean" | "null" | "void" | "undefined") {
 		super();
 		this.type = type;
 	}
