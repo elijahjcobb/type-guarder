@@ -1,6 +1,33 @@
 import {OAny, OArrayType, OObjectType, OObjectTypeDefinition, OOptional, OStandardType, OType} from "../index";
 import {ORegex} from "../ORegex";
 
+describe("Integration of OObject and OArray", () => {
+
+	const x: unknown = {};
+	const y: unknown = {a: ["Hello"], b: [{name: "Elijah", age: 22}]};
+
+	const o = OObjectType.follow({
+		a: OArrayType.any(OStandardType.string),
+		b: OArrayType.any(OObjectType.follow({
+			name: OStandardType.string,
+			age: OStandardType.number
+		}))
+	});
+
+	const a = o.verify(x);
+	const b = o.verify(y);
+
+	if (b) {
+		for (const fwe of b.b) {
+			fwe.name
+		}
+	}
+
+	expect(a).toBeUndefined();
+	expect(b).toBeDefined();
+
+});
+
 describe("OStandardType", (): void => {
 
 	const values: any[] = [
@@ -176,6 +203,39 @@ describe("OObjectType", (): void => {
 				setting: {
 					isDark: 32,
 					notificationTime: 2332
+				}
+			},
+			truthy: false
+		},
+		{
+			expect: {
+				x: OObjectType.follow({
+					y: OObjectType.follow({
+						z: OStandardType.string
+					})
+				})
+			},
+			value: {
+				x: {
+					y: {
+						z: "Hello, world!"
+					}
+				}
+			},
+			truthy: true
+		},
+		{
+			expect: {
+				x: OObjectType.follow({
+					y: OObjectType.follow({
+						z: OStandardType.string
+					})
+				})
+			},
+			value: {
+				x: {
+					y: {},
+					z: "Hello, world!"
 				}
 			},
 			truthy: false

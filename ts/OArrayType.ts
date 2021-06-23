@@ -43,6 +43,9 @@ export class OArrayType<T> extends OType<T> {
 		return true;
 	}
 
-	public static any<T>(...types: OType<T>[]): OType<T> { return new OArrayType(types); }
+	public static any<T>(...types: OType<T>[]): OType<T[]> {
+		// @ts-ignore
+		return new OArrayType<T[]>(types);
+	}
 
 }
