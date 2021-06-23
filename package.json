@@ -24,12 +24,12 @@
     "clean": "rm -rf js && rm -rf dts",
     "start": "node js/index.js"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/element-ts/oxygen.git"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "author": "Elijah Cobb <elijah@elijahcobb.com> (https://elijahcobb.com/)",
   "license": "MIT",
@@ -43,5 +43,8 @@
     "jest": "latest",
     "tslint": "latest",
     "typescript": "latest"
+  },
+  "dependencies": {
+
   }
 }
