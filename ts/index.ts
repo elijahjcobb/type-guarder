@@ -5,12 +5,12 @@
  * github.com/elijahjcobb
  */
 
-export * from "./OStandardType";
-export * from "./OArrayType";
-export * from "./OObjectType";
-export * from "./OEnum";
-export * from "./OUnion";
-export * from "./OOptional";
-export * from "./OType";
-export * from "./OAny";
-export * from "./ORegex";
+export * from "./TStandard";
+export * from "./TArray";
+export * from "./TObject";
+export * from "./TEnum";
+export * from "./TUnion";
+export * from "./TOptional";
+export * from "./TType";
+export * from "./TAny";
+export * from "./TRegex";

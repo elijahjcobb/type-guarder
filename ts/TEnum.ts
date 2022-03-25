@@ -5,9 +5,9 @@
  * github.com/elijahjcobb
  */
 
-import {OType} from "./OType";
+import {TType} from "./TType";
 
-export class OEnum<T> extends OType<T> {
+export class TEnum<T> extends TType<T> {
 
 	protected values: T[];
 
@@ -24,6 +24,6 @@ export class OEnum<T> extends OType<T> {
 
 	}
 
-	public static any<T>(...values: T[]): OType<T> { return new OEnum(values); }
+	public static any<T>(...values: T[]): TType<T> { return new TEnum(values); }
 
 }

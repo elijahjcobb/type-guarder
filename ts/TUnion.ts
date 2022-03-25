@@ -5,13 +5,13 @@
  * github.com/elijahjcobb
  */
 
-import {OType} from "./OType";
+import {TType} from "./TType";
 
-export class OUnion<T> extends OType<T> {
+export class TUnion<T> extends TType<T> {
 
-	protected readonly types: OType<T>[];
+	protected readonly types: TType<T>[];
 
-	protected constructor(types: OType<T>[]) {
+	protected constructor(types: TType<T>[]) {
 		super();
 		this.types = types;
 	}
@@ -29,6 +29,6 @@ export class OUnion<T> extends OType<T> {
 
 	}
 
-	public static any<T>(...types: OType<T>[]): OType<T> { return new OUnion(types); }
+	public static any<T>(...types: TType<T>[]): TType<T> { return new TUnion(types); }
 
 }

@@ -5,13 +5,13 @@
  * github.com/elijahjcobb
  */
 
-import {OType} from "./OType";
+import {TType} from "./TType";
 
-export class OArrayType<T> extends OType<T> {
+export class TArray<T> extends TType<T> {
 
-	protected readonly types: OType<T>[];
+	protected readonly types: TType<T>[];
 
-	protected constructor(types: OType<T>[]) {
+	protected constructor(types: TType<T>[]) {
 		super();
 		this.types = types;
 	}
@@ -43,9 +43,9 @@ export class OArrayType<T> extends OType<T> {
 		return true;
 	}
 
-	public static any<T>(...types: OType<T>[]): OType<T[]> {
+	public static any<T>(...types: TType<T>[]): TType<T[]> {
 		// @ts-ignore
-		return new OArrayType<T[]>(types);
+		return new TArray<T[]>(types);
 	}
 
 }

@@ -5,14 +5,14 @@
  * github.com/elijahjcobb
  */
 
-import {OType} from "./OType";
+import {TType} from "./TType";
 
 export type OObjectTypeDefinition<T> = {
-	[K in keyof T]: T[K] extends OType<any> ? T[K] : never
+	[K in keyof T]: T[K] extends TType<any> ? T[K] : never
 };
 
-export class OObjectType<T extends OObjectTypeDefinition<T>> extends OType<{
-	[K in keyof T]: T[K] extends OType<infer V> ? V : never;
+export class TObject<T extends OObjectTypeDefinition<T>> extends TType<{
+	[K in keyof T]: T[K] extends TType<infer V> ? V : never;
 }> {
 
 	protected readonly type: OObjectTypeDefinition<T>;
@@ -31,7 +31,7 @@ export class OObjectType<T extends OObjectTypeDefinition<T>> extends OType<{
 		for (const k in this.type) {
 
 			const v: any = value[k];
-			const expectedValue: OType<T> | undefined = this.type[k];
+			const expectedValue: TType<T> | undefined = this.type[k];
 			if (expectedValue === undefined) continue;
 			const conformity: boolean = expectedValue.conforms(v);
 			if (!conformity) return false;
@@ -43,8 +43,8 @@ export class OObjectType<T extends OObjectTypeDefinition<T>> extends OType<{
 
 	}
 
-	public static follow<T extends OObjectTypeDefinition<T>>(type: OObjectTypeDefinition<T>): OType<{
-		[K in keyof T]: T[K] extends OType<infer V> ? V : never;
-	}> { return new OObjectType(type); }
+	public static follow<T extends OObjectTypeDefinition<T>>(type: OObjectTypeDefinition<T>): TType<{
+		[K in keyof T]: T[K] extends TType<infer V> ? V : never;
+	}> { return new TObject(type); }
 
 }

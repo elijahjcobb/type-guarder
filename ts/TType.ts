@@ -5,7 +5,7 @@
  * github.com/elijahjcobb
  */
 
-export abstract class OType<T> {
+export abstract class TType<T> {
 
 	protected constructor() {}
 

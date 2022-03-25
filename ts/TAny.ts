@@ -5,9 +5,9 @@
  * github.com/elijahjcobb
  */
 
-import {OType} from "./OType";
+import {TType} from "./TType";
 
-export class OAny extends OType<any> {
+export class TAny extends TType<any> {
 
 
 	protected constructor() {
@@ -22,6 +22,6 @@ export class OAny extends OType<any> {
 
 	}
 
-	public static any(): OType<any> { return new OAny(); }
+	public static any(): TType<any> { return new TAny(); }
 
 }
