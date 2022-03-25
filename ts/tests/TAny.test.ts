@@ -9,11 +9,30 @@ import {TAny} from "../TAny";
 
 describe("OAny", (): void => {
 
-	test("Boolean", (): void => expect(TAny.any().conforms(true)).toBeTruthy());
-	test("String", (): void => expect(TAny.any().conforms("Hello, world!")).toBeTruthy());
-	test("Number", (): void => expect(TAny.any().conforms(42)).toBeTruthy());
-	test("Array", (): void => expect(TAny.any().conforms([])).toBeTruthy());
-	test("Object", (): void => expect(TAny.any().conforms({})).toBeTruthy());
-	test("Undefined", (): void => expect(TAny.any().conforms(undefined)).toBeTruthy());
+	const t: Map<string, any> = new Map<string, any>();
+
+	t.set("Function", () => {});
+	t.set("Boolean True", true);
+	t.set("Boolean False", false);
+	t.set("String - Empty", "");
+	t.set("String - N", "\n");
+	t.set("String - S", " ");
+	t.set("String - G", "Hello, world!");
+	t.set("NaN", Number.NaN);
+	t.set("+Infty", Number.POSITIVE_INFINITY);
+	t.set("-Infty", Number.NEGATIVE_INFINITY);
+	t.set("0", 0);
+	t.set("Pi", Math.PI);
+	t.set("Number", 42);
+	t.set("Array - Empty", []);
+	t.set("Array", [() => {}, true]);
+	t.set("Undefined", undefined);
+	t.set("Null", null);
+	t.set("Object", {});
+	t.set("Map", new Map());
+
+	for (const [name, value] of t.entries()) {
+		test(name, () => expect(TAny.any().conforms(value)).toBeTruthy());
+	}
 
 });
