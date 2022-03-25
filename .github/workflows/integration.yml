@@ -9,6 +9,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
             node-version: 16
-      - run: npm ci
+      - run: npm i
       - run: npm run compile
       - run: npm run test
