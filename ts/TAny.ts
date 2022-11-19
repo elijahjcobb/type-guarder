@@ -5,23 +5,18 @@
  * github.com/elijahjcobb
  */
 
-import {TType} from "./TType";
+import { TType } from "./TType";
 
 export class TAny extends TType<any> {
+  protected constructor() {
+    super();
+  }
 
+  public conforms(value: any): boolean {
+    return true;
+  }
 
-	protected constructor() {
-
-		super();
-
-	}
-
-	public conforms(value: any): boolean {
-
-		return true;
-
-	}
-
-	public static any(): TType<any> { return new TAny(); }
-
+  public static any(): TType<any> {
+    return new TAny();
+  }
 }

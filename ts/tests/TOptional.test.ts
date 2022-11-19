@@ -5,16 +5,16 @@
  * github.com/elijahjcobb
  */
 
-import {TOptional} from "../TOptional";
-import {TAny} from "../TAny";
-import {TStandard} from "../TStandard";
+import { T } from "../index";
 
 describe("OOptional", (): void => {
-
-	test("t1", (): void => expect(TOptional.maybe(TAny.any()).conforms(undefined)).toBeTruthy());
-	test("t2", (): void => expect(TOptional.maybe(TAny.any()).conforms(32)).toBeTruthy());
-	test("t3", (): void => expect(TOptional.maybe(TStandard.string).conforms(undefined)).toBeTruthy());
-	test("t4", (): void => expect(TOptional.maybe(TStandard.string).conforms("Hello, world!")).toBeTruthy());
-	test("t5", (): void => expect(TOptional.maybe(TStandard.string).conforms(42)).toBeFalsy());
-
+  test("t1", (): void =>
+    expect(T.optional(T.any()).conforms(undefined)).toBeTruthy());
+  test("t2", (): void => expect(T.optional(T.any()).conforms(32)).toBeTruthy());
+  test("t3", (): void =>
+    expect(T.optional(T.string()).conforms(undefined)).toBeTruthy());
+  test("t4", (): void =>
+    expect(T.optional(T.string()).conforms("Hello, world!")).toBeTruthy());
+  test("t5", (): void =>
+    expect(T.optional(T.string()).conforms(42)).toBeFalsy());
 });

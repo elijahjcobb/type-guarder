@@ -5,25 +5,21 @@
  * github.com/elijahjcobb
  */
 
-import {TType} from "./TType";
+import { TType } from "./TType";
 
 export class TEnum<T> extends TType<T> {
+  protected values: T[];
 
-	protected values: T[];
+  protected constructor(values: T[]) {
+    super();
+    this.values = values;
+  }
 
-	protected constructor(values: T[]) {
+  public conforms(value: any): boolean {
+    return this.values.indexOf(value) !== -1;
+  }
 
-		super();
-		this.values = values;
-
-	}
-
-	public conforms(value: any): boolean {
-
-		return this.values.indexOf(value) !== -1;
-
-	}
-
-	public static any<T>(...values: T[]): TType<T> { return new TEnum(values); }
-
+  public static any<T>(...values: T[]): TType<T> {
+    return new TEnum(values);
+  }
 }
