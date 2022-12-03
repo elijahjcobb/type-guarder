@@ -7,6 +7,8 @@ import { TStandard } from "./TStandard";
 import { TUnion } from "./TUnion";
 import { TEnum } from "./TEnum";
 
+export { TType } from "./TType";
+
 export const T = {
   string: () => TStandard.string,
   boolean: () => TStandard.boolean,
