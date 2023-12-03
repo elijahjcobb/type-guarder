@@ -1,7 +1,7 @@
 {
   "name": "type-guarder",
-  "version": "1.0.1",
-  "description": "A recursive run-time type checking package that is simple to use yet provides all the functionality you will ever need. Written by and for Typescript.",
+  "version": "1.0.2",
+  "description": "A simple, powerful and flexible runtime type checker for TypeScript.",
   "keywords": [
     "type",
     "check",
@@ -38,7 +38,7 @@
   "bugs": {
     "url": "https://github.com/elijahjcobb/type-guarder/issues"
   },
-  "homepage": "https://type-guarder.elijahcobb.app",
+  "homepage": "https://type-guarder.com",
   "devDependencies": {
     "@types/jest": "latest",
     "@types/node": "latest",

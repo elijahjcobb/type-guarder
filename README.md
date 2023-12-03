@@ -8,4 +8,4 @@ Welcome to type-guarder! A simple, powerful and flexible runtime type checker fo
 
 ## Documentation
 
-[type-guarder.elijahcobb.app](https://type-guarder.elijahcobb.app)
+[type-guarder.com](https://type-guarder.com)
