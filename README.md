@@ -1,12 +1,12 @@
-# type-guardian
+# type-guarder
 
-type-guardian is a recursive run-time type checking package that is simple to use yet provides all the functionality you will
+type-guarder is a recursive run-time type checking package that is simple to use yet provides all the functionality you will
 ever need. Written by and for Typescript.
 
 ## TLDR
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 const body = T.Object({
   name: T.Object({
@@ -62,13 +62,13 @@ Returns a boolean denoting whether the value provided conforms to the specific t
 ### Import
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 ```
 
 ### `T.String`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.String().conforms("Hello, world"); // true
 T.String().conforms(null); // false
@@ -82,7 +82,7 @@ T.String({ minLength: 1, maxLength: 4 }).conforms("abc"); // true
 ### `T.Boolean`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.Boolean().conforms(true); // true
 T.Boolean().conforms(3); // false
@@ -93,7 +93,7 @@ T.Boolean().conforms(null); // false
 ### `T.Number`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.Number().conforms(3); // true
 T.Number().conforms("Hello, world"); // false
@@ -109,7 +109,7 @@ T.Number({ min: 1, max: 4 }).conforms(3); // true
 #### `T.Integer`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.Integer().conforms(3); // true
 T.Integer().conforms(3.14); // false
@@ -120,7 +120,7 @@ T.Integer().conforms(null); // false
 #### `T.Float`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.Float().conforms(3.14); // true
 T.Float().conforms(3); // false
@@ -133,7 +133,7 @@ T.Float().conforms(null); // false
 > Note, you will probably rarely use `T.Null`, however it is used in higher order types like `T.Nullable` with a `T.Union`.
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.Null().conforms(null); // true
 T.Null().conforms(3); // false
@@ -144,7 +144,7 @@ T.Null().conforms(true); // false
 ### `T.Nullable`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.Nullable(T.Number()).conforms(null); // true
 T.Nullable(T.Number()).conforms(3); // true
@@ -157,7 +157,7 @@ T.Nullable(T.Number()).conforms(true); // false
 > Note, you will probably rarely use `T.Undefined`, however it is used in higher order types like `T.Undefinable` with a `T.Union`.
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.Undefined().conforms(undefined); // true
 T.Undefined().conforms(3); // false
@@ -168,7 +168,7 @@ T.Undefined().conforms(true); // false
 ### `T.Undefinable`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.Undefinable(T.Number()).conforms(undefined); // true
 T.Undefinable(T.Number()).conforms(3); // true
@@ -181,7 +181,7 @@ T.Undefinable(T.Number()).conforms(true); // false
 > Note, this is just a `T.Union` of `T`, `T.Null`, and `T.Undefined`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.Optional(T.Number()).conforms(null); // true
 T.Optional(T.Number()).conforms(undefined); // true
@@ -193,7 +193,7 @@ T.Optional(T.Number()).conforms(true); // false
 ### `T.Union`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.Union(T.Number(), T.String()).conforms("Hello, world!"); // true
 T.Union(T.Number(), T.String()).conforms(3); // true
@@ -209,7 +209,7 @@ T.Union(T.Integer(), T.Boolean(), T.String()).conforms(3.4); // false
 ### `T.Array`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.Array(T.Number(), T.String()).conforms([3, "hi", 2]); // true
 T.Array(T.Number(), T.String()).conforms([1, 2, 3]); // true
@@ -219,7 +219,7 @@ T.Array(T.Number(), T.String()).conforms([3, false, 2]); // false
 ### `T.ArrayWithOptions`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.ArrayWithOptions({
   types: [T.Number(), T.String()],
@@ -230,7 +230,7 @@ T.ArrayWithOptions({
 ### `T.Object`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 const checker = T.Object({
   a: T.String(),
@@ -259,7 +259,7 @@ checker.conforms({
 ### `T.Regex`
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 const checker = T.Regex(^[^\s@]+@[^\s@]+\.[^\s@]+$/);
 
@@ -271,7 +271,7 @@ checker.conforms(8); // false
 ### Recursion
 
 ```typescript
-import { T } from "@elijahjcobb/type-guardian";
+import { T } from "@elijahjcobb/type-guarder";
 
 T.Object({
   name: T.Object({
