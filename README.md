@@ -32,14 +32,14 @@ typeof body = {
   name: {
     first: string;
     last: string;
-  }
+  };
   email: string;
   phone: string | null;
   address: {
     street: string;
     apt: string | null;
     zip: string | number;
-  } | null
+  } | null;
 }
 ```
 
