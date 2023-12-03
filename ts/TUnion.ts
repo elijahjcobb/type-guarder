@@ -1,30 +1,35 @@
-/**
- * Elijah Cobb
- * elijah@elijahcobb.com
- * elijahcobb.com
- * github.com/elijahjcobb
- */
-
 import { TType } from "./TType";
+import { TContext } from "./context";
+import { TError } from "./error";
 
-export class TUnion<T> extends TType<T> {
-  protected readonly types: TType<T>[];
+export class TUnion<T extends TType<any>[]> extends TType<
+  T[number] extends TType<infer U> ? U : never
+> {
+  protected values: T;
 
-  protected constructor(types: TType<T>[]) {
+  public constructor(...values: T) {
     super();
-    this.types = types;
+    this.values = values;
   }
 
-  public conforms(value: any): boolean {
-    for (const type of this.types) {
-      const conformity: boolean = type.conforms(value);
-      if (conformity) return true;
+  public readableName(): string {
+    return this.values.map((v) => v.readableName()).join(" | ");
+  }
+  public checkType(value: any, context: TContext): void {
+    let error: TError<T> | undefined;
+    for (const type of this.values) {
+      try {
+        type.checkType(value, context);
+        error = undefined;
+        break;
+      } catch (e) {
+        error = new TError({
+          parent: e instanceof TError ? e.parentType : this,
+          value,
+          context,
+        });
+      }
     }
-
-    return false;
-  }
-
-  public static any<T>(...types: TType<T>[]): TType<T> {
-    return new TUnion(types);
+    if (error) throw error;
   }
 }

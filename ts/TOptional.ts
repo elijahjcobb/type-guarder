@@ -1,26 +1,23 @@
-/**
- * Elijah Cobb
- * elijah@elijahcobb.com
- * elijahcobb.com
- * github.com/elijahjcobb
- */
-
+import { TNull } from "./TNull";
 import { TType } from "./TType";
+import { TUndefined } from "./TUndefined";
+import { TUnion } from "./TUnion";
+import { TContext } from "./context";
 
-export class TOptional<T> extends TType<T | undefined> {
-  protected readonly type: TType<T>;
+export class TOptional<T> extends TUnion<[TType<T>, TNull, TUndefined]> {
+  private readonly subtype: TType<T>;
 
-  protected constructor(type: TType<T>) {
-    super();
-    this.type = type;
+  public constructor(subtype: TType<T>) {
+    super(subtype, new TNull(), new TUndefined());
+    this.subtype = subtype;
   }
 
-  public conforms(value: any): boolean {
-    if (value === undefined) return true;
-    return this.type.conforms(value);
+  public readableName(): string {
+    return `${this.subtype.readableName()} | null | undefined`;
   }
-
-  public static maybe<T>(type: TType<T>): TType<T | undefined> {
-    return new TOptional(type);
+  public checkType(value: any, context: TContext): void {
+    if (value === null) return;
+    if (value === undefined) return;
+    this.subtype.checkType(value, context);
   }
 }

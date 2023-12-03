@@ -1,187 +1,295 @@
-# typr
-Welcome to the typr wiki! This is a work in progress and will be constantly updated. Below you will find pages to
-this wiki but also feel free to view some nice features and information about the package.
+# type-guardian
 
-[Want to buy my next coffee? :)](https://www.buymeacoffee.com/elijahjcobb)
-
-## Summary
-typr is a recursive run-time type checking package that is simple to use yet provides all the functionality you will
+type-guardian is a recursive run-time type checking package that is simple to use yet provides all the functionality you will
 ever need. Written by and for Typescript.
 
-There are 6 different type checkers built into typr. Below I will explain all of them. Every type extends `TType`.
-This provides you with a few functions below as shown below. Everything is not only type-checking during runtime, but
-it is also ALL generic. Most times you won't even realize the type system working underneath. For example, if you are
-checking a `OStandartType.string` and you call `.verify()` you will get back `string | undefined`. The type system is
-smart enough for all types to know what you are really meaning in your type definitions because it just infers the raw
-base type.
+## TLDR
+
+```typescript
+import { T } from "@elijahjcobb/type-guardian";
+
+const body = T.Object({
+  name: T.Object({
+    first: T.String(),
+    last: T.String(),
+  }),
+  email: T.Regex(^[^\s@]+@[^\s@]+\.[^\s@]+$/),
+  phone: T.Nullable(T.string()),
+  address: T.Nullable(
+    T.Object({
+      street: T.String(),
+      apt: T.Nullable(T.String()),
+      zip: T.Union(T.String(), T.Integer()),
+    })
+  ),
+}).assert(await req.json())
+```
+
+In the above example, `body` will automatically have the following type:
+
+```typescript
+typeof body = {
+  name: {
+    first: string;
+    last: string;
+  }
+  email: string;
+  phone: string | null;
+  address: {
+    street: string;
+    apt: string | null;
+    zip: string | number;
+  } | null
+}
+```
 
 ## Functions
+
+#### `.assert(value: any): T`
+
+Given a specific type, check a value for conformance and return the typed value. If the value does not conform to the type, a `TError` will be thrown.
+
+#### `.check(value: any): T | null`
+
+This function will check if the value conforms to the type. If it does, it will return the value with the correct typing. If not, it will return undefined.
+
 #### `.conforms(value: any): boolean`
-This will check if the value passed in conforms to the `TType` it returns a boolean for whether the value conforms.
 
-#### `.verify(value: any): T | undefined`
-This function will check if the value conforms and if it does, it will return the value with the correct types in the
-type system by parsing out the raw type from the `TType` provided.
+Returns a boolean denoting whether the value provided conforms to the specific type.
 
-#### `.force(value: any): T`
-This function is almost identical to `verify(...)` however it will return `T` instead of `T | undefined` if the value
-does not conform, an error will be thrown.
+## Usage
 
-## Types
-
-### `TStandard`
-The standard type object contains types like: string, number, boolean, void, undefined, null.
+### Import
 
 ```typescript
-import {TStandard} from "@elijahjcobb/typr";
-
-TStandard.number.conforms(42); // true
-TStandard.number.verify("Hello,  world!"); // number | undefined
-TStandard.number.verify({a: 1, b: 2}); // number (may throw error)
-TStandard.number.conforms("Hello, world!"); // false
-TStandard.string.conforms("Hello, world!"); // true
-TStandard.boolean.conforms(42); // false
+import { T } from "@elijahjcobb/type-guardian";
 ```
 
-### `TEnum`
-Now if you want to check some values you can do that too with the enum type. It will return `true` if the value exists
-in the accepted values provided by `.any()`.
+### `T.String`
+
 ```typescript
-import {TEnum} from "@elijahjcobb/typr";
+import { T } from "@elijahjcobb/type-guardian";
 
-TEnum.any(true, 42, "HI").conforms(false); // false
-TEnum.any(true, 42, "HI").conforms(41); // false
-TEnum.any(true, 42, "HI").conforms(true); // true
-TEnum.any(true, 42, "HI").conforms("HI"); // true
-TEnum.any(true, 42, "HI").conforms(42); // true
+T.String().conforms("Hello, world"); // true
+T.String().conforms(null); // false
+T.String().conforms(3); // false
+
+T.String({ minLength: 8 }).conforms("abc"); // false
+T.String({ maxLength: 2 }).conforms("abc"); // false
+T.String({ minLength: 1, maxLength: 4 }).conforms("abc"); // true
 ```
 
-### `TOptional`
-The optional type will return `true` if the value is the correct type or if the value is `undefined`. Otherwise, it will
-return false.
+### `T.Boolean`
+
 ```typescript
-import {TOptional, TStandard} from "@elijahjcobb/typr";
+import { T } from "@elijahjcobb/type-guardian";
 
-TOptional.maybe(TStandard.string).conforms("Hello, world!"); // true
-TOptional.maybe(TStandard.string).conforms(undefined); // true
-TOptional.maybe(TStandard.string).conforms(42); // false
+T.Boolean().conforms(true); // true
+T.Boolean().conforms(3); // false
+T.Boolean().conforms("Hello, world"); // false
+T.Boolean().conforms(null); // false
 ```
 
-### `TUnion`
-The union type will return `true` if the value is any of the allowed types.
+### `T.Number`
+
 ```typescript
-import {TStandard, TUnion} from "@elijahjcobb/typr";
+import { T } from "@elijahjcobb/type-guardian";
 
-TUnion.any(TStandard.string, TStandard.number).conforms("Hello, world!"); // true
-TUnion.any(TStandard.string, TStandard.number).conforms(42); // true
-TUnion.any(TStandard.string, TStandard.number).conforms(true); // false
+T.Number().conforms(3); // true
+T.Number().conforms("Hello, world"); // false
+T.Number().conforms(null); // false
+
+T.Number({ min: 5 }).conforms(3); // false
+T.Number({ max: 5 }).conforms(10); // false
+T.Number({ min: 1, max: 4 }).conforms(3); // true
 ```
 
-### `TArray`
-The array type checks that the value is an array and that every value of the array is one of the accepted types. If any
-of the values do not conform, the entire array does not conform.
+> Note, you can also use `T.Integer` and `T.Float` with the same options for more fine grained type checking.
+
+#### `T.Integer`
+
 ```typescript
-import {TArray, TStandard} from "@elijahjcobb/typr";
+import { T } from "@elijahjcobb/type-guardian";
 
-TArray.any(TStandard.string).conforms(["a", "b", "c"]); // true
-TArray.any(TStandard.string).conforms(["a", 42, "c"]); // false
-TArray.any(TStandard.string, TStandard.number).conforms(["a", 42, "c"]); // true
+T.Integer().conforms(3); // true
+T.Integer().conforms(3.14); // false
+T.Integer().conforms("Hello, world"); // false
+T.Integer().conforms(null); // false
 ```
 
-### `TObject`
-The object type checks that all keys in the type definition passed are keys in the value passed and that each key's
-value conforms. If a single key value pair does not conform, the entire object does not conform.
+#### `T.Float`
+
 ```typescript
-import {TObject, TStandard} from "@elijahjcobb/typr";
+import { T } from "@elijahjcobb/type-guardian";
 
-TObject.follow({
-    name: TStandard.string,
-    age: TStandard.number
-}).conforms({
-    name: "Elijah",
-    age: 21
-}); // true
-
-TObject.follow({
-    name: TStandard.string,
-    age: TStandard.number
-}).conforms({
-    name: "Elijah",
-    age: true
-}); // false
-
-TObject.follow({
-    name: TStandard.string,
-    age: TStandard.number
-}).conforms({
-    name: "Elijah"
-}); // false
+T.Float().conforms(3.14); // true
+T.Float().conforms(3); // false
+T.Float().conforms("Hello, world"); // false
+T.Float().conforms(null); // false
 ```
 
-### `TRegex`
-The ability to handle regex checking in the oxygen type checking system. You can write your own regex with `.custom()`
-or use one of the predefined regex expressions.
+### `T.Null`
+
+> Note, you will probably rarely use `T.Null`, however it is used in higher order types like `T.Nullable` with a `T.Union`.
+
 ```typescript
-import {TRegex} from "@elijahjcobb/typr";
+import { T } from "@elijahjcobb/type-guardian";
 
-TRegex.phone().conforms("+1 (123) 456-7890"); // true
-TRegex.phone().conforms("qwqwd 1234"); // false
-TRegex.email().conforms("john@gmail.com"); // true
-TRegex.domain().conforms("google.com"); // true
-TRegex.url().conforms("https://google.com"); // true
-TRegex.custom(/#?([\da-fA-F]{2})([\da-fA-F]{2})([\da-fA-F]{2})/g).conforms("#FAFAFA"); // true
+T.Null().conforms(null); // true
+T.Null().conforms(3); // false
+T.Null().conforms("Hello, world"); // false
+T.Null().conforms(true); // false
 ```
 
-### `TAny`
-This type is an extra type that literally always returns true. This can be used for example with `TOptional` to require
-that a value is defined and it does not matter the type of the variable.
+### `T.Nullable`
+
 ```typescript
-import {TAny} from "@elijahjcobb/typr";
-TAny.any().conforms(1); // true
-TAny.any().conforms(undefined); // true
+import { T } from "@elijahjcobb/type-guardian";
+
+T.Nullable(T.Number()).conforms(null); // true
+T.Nullable(T.Number()).conforms(3); // true
+T.Nullable(T.Number()).conforms("Hello, world"); // false
+T.Nullable(T.Number()).conforms(true); // false
 ```
 
-## Recursive
-Keep in mind, every type checker's type input is of `TType` and every type checker is an `TType`. So you can super
-easily build recursive structures and Oxygen will type check all of it!
+### `T.Undefined`
+
+> Note, you will probably rarely use `T.Undefined`, however it is used in higher order types like `T.Undefinable` with a `T.Union`.
+
 ```typescript
-import {
-    TArray,
-    TEnum,
-    TObject,
-    TOptional,
-    TStandard,
-    TRegex
-} from "@elijahjcobb/typr";
+import { T } from "@elijahjcobb/type-guardian";
 
-TObject.follow({
-	name: TStandard.string,
-    email: TRegex.email(),
-	age: TStandard.number,
-	favoriteNumbers: TArray.any(TStandard.number),
-	address: TObject.follow({
-		street: TStandard.string,
-		city: TStandard.string,
-		country: TStandard.string,
-		zip: TStandard.number
-	}),
-	isAdmin: TStandard.boolean,
-	parentId: TOptional.maybe(TStandard.string),
-	settings: TObject.follow({
-		theme: TEnum.any("light", "dark", "default"),
-		keepSession: TStandard.boolean
-	})
-}).conforms({ /* the actual object */});
+T.Undefined().conforms(undefined); // true
+T.Undefined().conforms(3); // false
+T.Undefined().conforms("Hello, world"); // false
+T.Undefined().conforms(true); // false
 ```
 
-## About
+### `T.Undefinable`
 
-### Language
-All of typr is written in [TypeScript](https://www.typescriptlang.org). If you do not know how to use TypeScript don't
-worry. It is completely compatible with JavaScript.
+```typescript
+import { T } from "@elijahjcobb/type-guardian";
 
-### Why?
-It was time for me to write my own type checker!
+T.Undefinable(T.Number()).conforms(undefined); // true
+T.Undefinable(T.Number()).conforms(3); // true
+T.Undefinable(T.Number()).conforms("Hello, world"); // false
+T.Undefinable(T.Number()).conforms(true); // false
+```
 
-### Author/Maintainer
-My name is [Elijah Cobb](https://elijahcobb.com).
+### `T.Optional`
+
+> Note, this is just a `T.Union` of `T`, `T.Null`, and `T.Undefined`
+
+```typescript
+import { T } from "@elijahjcobb/type-guardian";
+
+T.Optional(T.Number()).conforms(null); // true
+T.Optional(T.Number()).conforms(undefined); // true
+T.Optional(T.Number()).conforms(3); // true
+T.Optional(T.Number()).conforms("Hello, world"); // false
+T.Optional(T.Number()).conforms(true); // false
+```
+
+### `T.Union`
+
+```typescript
+import { T } from "@elijahjcobb/type-guardian";
+
+T.Union(T.Number(), T.String()).conforms("Hello, world!"); // true
+T.Union(T.Number(), T.String()).conforms(3); // true
+T.Union(T.Number(), T.String()).conforms(null); // false
+T.Union(T.Number(), T.String()).conforms([]); // false
+T.Union(T.Number(), T.String()).conforms(true); // false
+
+T.Union(T.Integer(), T.Boolean(), T.String()).conforms(true); // true
+T.Union(T.Integer(), T.Boolean(), T.String()).conforms(3); // true
+T.Union(T.Integer(), T.Boolean(), T.String()).conforms(3.4); // false
+```
+
+### `T.Array`
+
+```typescript
+import { T } from "@elijahjcobb/type-guardian";
+
+T.Array(T.Number(), T.String()).conforms([3, "hi", 2]); // true
+T.Array(T.Number(), T.String()).conforms([1, 2, 3]); // true
+T.Array(T.Number(), T.String()).conforms([3, false, 2]); // false
+```
+
+### `T.ArrayWithOptions`
+
+```typescript
+import { T } from "@elijahjcobb/type-guardian";
+
+T.ArrayWithOptions({
+  types: [T.Number(), T.String()],
+  options: { minLength: 8, maxLength: 16 },
+}).conforms([3, "hi", 2]); // false
+```
+
+### `T.Object`
+
+```typescript
+import { T } from "@elijahjcobb/type-guardian";
+
+const checker = T.Object({
+  a: T.String(),
+  b: T.Number(),
+  c: T.Boolean();
+})
+
+checker.conforms({
+  a: "Hello, world!",
+  b: 123,
+  c: true
+}) // true
+
+checker.conforms({
+  a: "Hello, world!",
+  b: 123,
+}) // false
+
+checker.conforms({
+  a: "Hello, world!",
+  b: 123,
+  c: "nope"
+}) // false
+```
+
+### `T.Regex`
+
+```typescript
+import { T } from "@elijahjcobb/type-guardian";
+
+const checker = T.Regex(^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+
+checker.conforms("jane@doe.com"); // true
+checker.conforms("janedoe.com"); // false
+checker.conforms(8); // false
+```
+
+### Recursion
+
+```typescript
+import { T } from "@elijahjcobb/type-guardian";
+
+T.Object({
+  name: T.Object({
+    first: T.String(),
+    last: T.String(),
+  }),
+  email: T.Regex(^[^\s@]+@[^\s@]+\.[^\s@]+$/),
+  phone: T.Nullable(T.string()),
+  address: T.Nullable(
+    T.Object({
+      street: T.String(),
+      apt: T.Nullable(T.String()),
+      zip: T.Union(T.String(), T.Integer()),
+    })
+  ),
+});
+```
+
+## Author/Maintainer
+
+My name is [Elijah Cobb](https://elijahcobb.dev).

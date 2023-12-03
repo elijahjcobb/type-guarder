@@ -5,19 +5,28 @@
  * github.com/elijahjcobb
  */
 
+import { TContext } from "./context";
+
 export abstract class TType<T> {
-  protected constructor() {}
+  public abstract readableName(): string;
+  public abstract checkType(value: any, context: TContext): void;
 
-  public abstract conforms(value: any): boolean;
-
-  public verify(value: any): T | undefined {
-    if (!this.conforms(value)) return undefined;
+  public assert(value: any): T {
+    this.checkType(value, new TContext());
     return value as unknown as T;
   }
 
-  public force(value: any): T {
-    if (!this.conforms(value))
-      throw new Error("Oxygen found a type that does not conform.");
+  public conforms(value: any): boolean {
+    try {
+      this.assert(value);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  public check(value: any): T | null {
+    if (!this.conforms(value)) return null;
     return value as unknown as T;
   }
 }

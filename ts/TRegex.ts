@@ -1,52 +1,28 @@
-/**
- * Elijah Cobb
- * elijah@elijahcobb.com
- * elijahcobb.com
- * github.com/elijahjcobb
- */
-
 import { TType } from "./TType";
-import { TStandard } from "./TStandard";
+import { TContext } from "./context";
+import { TError, TErrorRegex } from "./error";
 
 export class TRegex extends TType<string> {
-  protected expression: RegExp;
-
-  protected constructor(expression: RegExp) {
+  public constructor(private readonly regex: RegExp) {
     super();
-
-    this.expression = expression;
   }
 
-  public conforms(value: any): boolean {
-    if (!TStandard.string.conforms(value)) return false;
-    return this.expression.test(value);
+  public readableName(): string {
+    return this.regex.source;
   }
 
-  public static custom(expression: RegExp): TType<string> {
-    return new TRegex(expression);
-  }
-
-  public static email(): TType<string> {
-    return new TRegex(
-      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
-    );
-  }
-
-  public static domain(): TType<string> {
-    return new TRegex(
-      /([a-z0-9A-Z]\.)*[a-z0-9-]+\.([a-z0-9]{2,24})+(\.co\.([a-z0-9]{2,24})|\.([a-z0-9]{2,24}))*/g
-    );
-  }
-
-  public static url(): TType<string> {
-    return new TRegex(
-      /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi
-    );
-  }
-
-  public static phone(): TType<string> {
-    return new TRegex(
-      /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/gm
-    );
+  public checkType(value: any, context: TContext): void {
+    if (typeof value !== "string")
+      throw new TError({
+        value,
+        context,
+        parent: this,
+      });
+    if (!this.regex.test(value))
+      throw new TErrorRegex({
+        value,
+        context,
+        parent: this,
+      });
   }
 }

@@ -1,11 +1,8 @@
-/**
- * Elijah Cobb
- * elijah@elijahcobb.com
- * elijahcobb.com
- * github.com/elijahjcobb
- */
-
+import { TAny } from "./TAny";
+import { TArray } from "./TArray";
 import { TType } from "./TType";
+import { TContext } from "./context";
+import { TError } from "./error";
 
 export type TObjectTypeDefinition<T> = {
   [K in keyof T]: T[K] extends TType<any> ? T[K] : never;
@@ -16,33 +13,42 @@ export class TObject<T extends TObjectTypeDefinition<T>> extends TType<{
 }> {
   protected readonly type: TObjectTypeDefinition<T>;
 
-  protected constructor(types: TObjectTypeDefinition<T>) {
+  public constructor(type: TObjectTypeDefinition<T>) {
     super();
-    this.type = types;
+    this.type = type;
   }
 
-  public conforms(value: any): boolean {
-    if (typeof value !== "object") return false;
-
-    let countedKeys: number = Object.keys(this.type).length;
+  public readableName(): string {
+    const value: string[] = [];
 
     for (const k in this.type) {
-      const v: any = value[k];
-      const expectedValue: TType<T> | undefined = this.type[k];
-      if (expectedValue === undefined) continue;
-      const conformity: boolean = expectedValue.conforms(v);
-      if (!conformity) return false;
-      countedKeys--;
+      const v: TType<any> = this.type[k];
+      value.push(`${k}: ${v.readableName()}`);
     }
 
-    return countedKeys === 0;
+    return `{ ${value.join(", ")} }`;
   }
 
-  public static follow<T extends TObjectTypeDefinition<T>>(
-    type: TObjectTypeDefinition<T>
-  ): TType<{
-    [K in keyof T]: T[K] extends TType<infer V> ? V : never;
-  }> {
-    return new TObject(type);
+  public checkType(value: any, context: TContext): void {
+    if (typeof value !== "object")
+      throw new TError({
+        value,
+        context,
+        parent: this,
+      });
+
+    if (Array.isArray(value))
+      throw new TError({
+        value,
+        context,
+        parent: this,
+      });
+
+    for (const [k, t] of Object.entries(this.type)) {
+      const v = value[k];
+      const type = t as TType<any>;
+      const newContext = context.addTrace(k, "object");
+      type.checkType(v, newContext);
+    }
   }
 }

@@ -1,6 +1,6 @@
 {
-  "name": "@elijahjcobb/typr",
-  "version": "2.0.1",
+  "name": "type-guardian",
+  "version": "1.0.0",
   "description": "A recursive run-time type checking package that is simple to use yet provides all the functionality you will ever need. Written by and for Typescript.",
   "keywords": [
     "type",
@@ -8,7 +8,9 @@
     "checker",
     "typescript",
     "runtime",
-    "recursive"
+    "recursive",
+    "guard",
+    "guardian"
   ],
   "main": "js/index",
   "types": "dts/index",
@@ -29,14 +31,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elijahjcobb/typr.git"
+    "url": "git+https://github.com/elijahjcobb/type-guardian.git"
   },
-  "author": "Elijah Cobb <elijah@elijahcobb.com> (https://elijahcobb.com/)",
+  "author": "Elijah Cobb <elijah@elijahcobb.com> (https://elijahcobb.dev/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/elijahjcobb/typr/issues"
+    "url": "https://github.com/elijahjcobb/type-guardian/issues"
   },
-  "homepage": "https://github.com/elijahjcobb/typr#readme",
+  "homepage": "https://github.com/elijahjcobb/type-guardian#readme",
   "devDependencies": {
     "@types/jest": "latest",
     "@types/node": "latest",

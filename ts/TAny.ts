@@ -1,22 +1,9 @@
-/**
- * Elijah Cobb
- * elijah@elijahcobb.com
- * elijahcobb.com
- * github.com/elijahjcobb
- */
-
 import { TType } from "./TType";
+import { TContext } from "./context";
 
 export class TAny extends TType<any> {
-  protected constructor() {
-    super();
+  public readableName(): string {
+    return "any";
   }
-
-  public conforms(value: any): boolean {
-    return true;
-  }
-
-  public static any(): TType<any> {
-    return new TAny();
-  }
+  public checkType(value: any, context?: TContext | undefined): void {}
 }
