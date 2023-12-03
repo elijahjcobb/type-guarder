@@ -25,7 +25,7 @@ export abstract class TType<T> {
     }
   }
 
-  public check(value: any): T | null {
+  public unwrap(value: any): T | null {
     if (!this.conforms(value)) return null;
     return value as unknown as T;
   }
