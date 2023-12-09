@@ -1,6 +1,6 @@
 {
   "name": "type-guarder",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A simple, powerful and flexible runtime type checker for TypeScript.",
   "keywords": [
     "type",

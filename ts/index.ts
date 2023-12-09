@@ -45,3 +45,4 @@ export const T = {
 };
 
 export * from "./error";
+export type { TObjectTypeDefinition, TObjectOptions } from "./TObject";
