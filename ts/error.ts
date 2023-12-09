@@ -110,3 +110,21 @@ export class TErrorArrayLength<T> extends TError<T> {
     } ${bound} elements.`;
   }
 }
+
+export class TErrorObjectInjection<T> extends TError<T> {
+  public constructor(
+    expected: number,
+    actual: number,
+    config: {
+      parent: TType<T>;
+      value: any;
+      context?: TContext;
+    }
+  ) {
+    super(config);
+    const location = config.context && config.context.getTrace();
+    this.message = `The object \`${JSON.stringify(config.value)}\`${
+      location ? ` at \`${location}\`` : ""
+    } is not injective to the required type. It has ${actual} properties and it should have ${expected}.`;
+  }
+}
